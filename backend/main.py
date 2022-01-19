@@ -4,12 +4,14 @@ import os
 from resources.inventory_collection_resource import InventoryCollection
 from resources.inventory_resource import Inventory
 from resources.shipment_collection_resource import ShipmentCollection
+from resources.shipment_resource import Shipment
 
 app = Flask(__name__)
 api = Api(app)
 api.add_resource(InventoryCollection, "/inventory")
 api.add_resource(Inventory, "/inventory/<string:inventory_id>")
 api.add_resource(ShipmentCollection, "/shipments")
+api.add_resource(Shipment, "/shipments/<string:shipment_id>")
 
 
 if __name__=='__main__':

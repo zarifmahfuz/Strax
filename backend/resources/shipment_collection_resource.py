@@ -66,7 +66,7 @@ class ShipmentCollection(Resource):
             # finally, create a new shipment document
             data["date_created"] = get_date(data["date_created"])
             shipment_id = shipment_collection.insert_one(data).inserted_id
-            return {"uri": str(shipment_id)}, 200
+            return {"_id": str(shipment_id)}, 200
         except (jsonschema.exceptions.ValidationError, DataFormatError) as e:
             return {"reason": str(e)}, 400
         except Exception as e:

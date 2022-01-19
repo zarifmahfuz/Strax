@@ -37,7 +37,7 @@ class InventoryCollection(Resource):
             inventory_collection_schema_validator.validate_post(data)
             data["date_created"] = get_date(data["date_created"])
             inventory_id = inventory_collection.insert_one(request.get_json()).inserted_id
-            response = {"uri": str(inventory_id)}
+            response = {"_id": str(inventory_id)}
             return response, 201
         except (jsonschema.exceptions.ValidationError, DataFormatError) as e:
             return {"reason": str(e)}, 400

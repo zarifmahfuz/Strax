@@ -43,8 +43,9 @@ class Inventory(Resource):
         try:
             data = request.get_json()
             inventory_schema_validator.validate_put(data)
+            
             # # can't update id
-            if "_id" in data["_id"]:
+            if "_id" in data:
                 del data["_id"]
                 
             data["date_created"] = get_date(data["date_created"])
