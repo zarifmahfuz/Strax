@@ -9,6 +9,10 @@ class InventoryCollectionSchemaValidator(InventorySchemaValidator):
     """
     def __init__(self):
         super().__init__()
+        # _id has to be a required field to update an Inventory document through the InventoryCollection resource
+        self.put_schema = copy.deepcopy(self.document_schema)
+        self.put_schema["properties"]["_id"] = {"type": "string"}
+        self.put_schema["required"].extend(["_id"])
         self.put_list_schema = {
             "type": "array",
             "items": self.put_schema
@@ -44,7 +48,7 @@ class InventoryCollectionSchemaValidator(InventorySchemaValidator):
         
         if (isinstance(data, dict)):
             # a single document
-            super().validate_put(data)
+            validate(instance=data, schema=self.put_schema)
         elif (isinstance(data, list)):
             validate(instance=data, schema=self.put_list_schema)
         else:

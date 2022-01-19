@@ -7,6 +7,7 @@ import jsonschema
 import json
 from bson import json_util
 from pymongo import ReturnDocument
+from utils.date_converter import get_date
 from model.inv_schema_val import InventorySchemaValidator
 from model.exceptions.data_format import DataFormatError
 
@@ -42,9 +43,11 @@ class Inventory(Resource):
         try:
             data = request.get_json()
             inventory_schema_validator.validate_put(data)
-            # # can't update id and date
-            del data["_id"]
-            del data["date_created"]
+            # # can't update id
+            if "_id" in data["_id"]:
+                del data["_id"]
+                
+            data["date_created"] = get_date(data["date_created"])
             result = inventory_collection.find_one_and_update(
                 {"_id": ObjectId(inventory_id)},
                 {"$set": data},
@@ -73,7 +76,7 @@ class Inventory(Resource):
             if "_id" in data:
                 del data["_id"]
             if "date_created" in data:
-                del data["date_created"]
+                data["date_created"] = get_date(data["date_created"])
             result = inventory_collection.find_one_and_update(
                 {"_id": ObjectId(inventory_id)},
                 {"$set": data},

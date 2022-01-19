@@ -7,6 +7,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 import jsonschema
 from pymongo import UpdateOne
+from utils.date_converter import get_date
 from model.inv_col_schema_val import InventoryCollectionSchemaValidator
 from model.exceptions.data_format import DataFormatError
 
@@ -34,7 +35,7 @@ class InventoryCollection(Resource):
         try:
             data = request.get_json()
             inventory_collection_schema_validator.validate_post(data)
-            data["date_created"] = datetime.utcnow().isoformat(sep='T',timespec='milliseconds')
+            data["date_created"] = get_date(data["date_created"])
             inventory_id = inventory_collection.insert_one(request.get_json()).inserted_id
             response = {"uri": str(inventory_id)}
             return response, 201
@@ -49,7 +50,6 @@ class InventoryCollection(Resource):
             Bulk updates a given list of inventory documents.
             For every given document, all fields of an inventory document must be specified in the request data, including _id.
             Does not support new document creation; if an id does not exist, it will just be skipped over.
-            Date creation change is not supported.
         """
         try:
             inventory_collection_schema_validator.validate_put(request.get_json())
@@ -63,9 +63,9 @@ class InventoryCollection(Resource):
                 # batch bulk write operations to be sent to the database server
                 doc_id = doc["_id"]
                 del doc["_id"]                      # cannot update the id
-                # not allowing date creation change
+                # create date object
                 if ("date_created" in doc):
-                    del doc["date_created"]
+                    doc["date_created"] = get_date(doc["date_created"])
 
                 bulk_update_list.append(UpdateOne(
                     {"_id": ObjectId(doc_id)},

@@ -11,18 +11,15 @@ class InventorySchemaValidator(object):
             "type": "object",
             "properties": {
                 "name": {"type": "string"},
+                "date_created": {"type": "string", "format": "date-time"},
                 "description": {"type": "string"},
                 "price": {"type": "number"},
                 "units_remaining": {"type": "integer"}
             },
-            "required": ["name", "description", "price", "units_remaining"],
+            "required": ["name", "date_created", "description", "price", "units_remaining"],
             "additionalProperties": False
         }
-        self.put_schema = copy.deepcopy(self.document_schema)
-        self.put_schema["properties"]["_id"] = {"type": "string"}
-        self.put_schema["properties"]["date_created"] = {"type": "string"}
-        self.put_schema["required"].extend(["_id", "date_created"])
-        self.patch_schema = copy.deepcopy(self.put_schema)
+        self.patch_schema = copy.deepcopy(self.document_schema)
         del self.patch_schema["required"]
 
     def validate_put(self, data):
@@ -30,14 +27,14 @@ class InventorySchemaValidator(object):
             Validates the data given to a PUT request.
 
             Parameters:
-                data(dict): json document
+                data (dict): json document
 
             Raises:
                 jsonschema.exceptions.ValidationError: invalid data
                 DataFormatError: invalid data format
         """
         if (isinstance(data, dict)):
-            validate(instance=data, schema=self.put_schema)
+            validate(instance=data, schema=self.document_schema)
         else:
             raise DataFormatError("Invalid data format")
 
