@@ -1,0 +1,11 @@
+{
+    "description": "Sample shipment 1",
+    "date_created": "2022-01-13T20:20:39+00:00",
+    "from": "Sample from address",
+    "to": "Sample to address",
+    "completed": false,
+    "inventory_items": [
+        {"inventory_id": "61e2559cea78002c92ddf394", "units": 1},
+        {"inventory_id": "61e2559cea78002c92ddf394", "units": 0}
+    ]
+}
