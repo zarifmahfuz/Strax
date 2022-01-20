@@ -1,6 +1,6 @@
 # Shopify Backend Developer Challenge
 
-This repository implements REST APIs connecting to the backend code base of an inventory tracking web application meant for a logistics company. 
+This repository implements REST APIs connecting to the backend code base of an inventory tracking web application meant for a logistics company. A frontend application can communicate with the server through these REST APIs.
 
 **ADDITIONAL FEATURE**: Ability to create “shipments” and assign inventory to the shipment, and adjust inventory appropriately
 
