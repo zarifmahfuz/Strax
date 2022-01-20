@@ -2,6 +2,8 @@
 
 This repository implements REST APIs connecting to the backend code base of an inventory tracking web application meant for a logistics company. 
 
+**Additional feature**: Ability to create “shipments” and assign inventory to the shipment, and adjust inventory appropriately
+
 ## Build
 
 ### Requirements
